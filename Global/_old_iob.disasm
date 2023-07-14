@@ -1,0 +1,164 @@
+SAS AMIGA 680x0OBJ Module Disassembler 6.50
+Copyright © 1993 SAS Institute, Inc.
+
+
+Amiga Object File Loader V1.00
+68000 Instruction Set
+
+EXTERNAL DEFINITIONS
+
+__STI_500_stdio_init 0000-00    ___iob 0000-01
+
+SECTION 00 "text" 000001F0 BYTES
+       | 0000  9EFC 003C                      SUBA.W      #003C,A7
+       | 0004  48E7 2006                      MOVEM.L     D2/A5-A6,-(A7)
+       | 0008  41EC  0000-01.2                LEA         01.00000000(A4),A0
+       | 000C  2948  0000-XX.2                MOVE.L      A0,___firstfile(A4)
+       | 0010  41EC  0010-02.2                LEA         02.00000010(A4),A0
+       | 0014  2948  0000-02.2                MOVE.L      A0,02.00000000(A4)
+       | 0018  41EC  0020-02.2                LEA         02.00000020(A4),A0
+       | 001C  2948  0010-02.2                MOVE.L      A0,02.00000010(A4)
+       | 0020  42AC  0020-02.2                CLR.L       02.00000020(A4)
+       | 0024  41EC  0000-02.2                LEA         02.00000000(A4),A0
+       | 0028  2948  0000-XX.2                MOVE.L      A0,___ufbs(A4)
+       | 002C  42AC  000C-02.2                CLR.L       02.0000000C(A4)
+       | 0030  42AC  001C-02.2                CLR.L       02.0000001C(A4)
+       | 0034  42AC  002C-02.2                CLR.L       02.0000002C(A4)
+       | 0038  297C 0000 8011  0004-02.2      MOVE.L      #00008011,02.00000004(A4)
+       | 0040  297C 0000 8012  0014-02.2      MOVE.L      #00008012,02.00000014(A4)
+       | 0048  297C 0000 8016  0024-02.2      MOVE.L      #00008016,02.00000024(A4)
+       | 0050  2C6C  0000-XX.2                MOVEA.L     _DOSBase(A4),A6
+       | 0054  4EAE FFC4                      JSR         FFC4(A6)
+       | 0058  4A80                           TST.L       D0
+       | 005A  6600 0106                      BNE.W       0162
+       | 005E  4AAC  0000-XX.2                TST.L       __WBenchMsg(A4)
+       | 0062  6710                           BEQ.B       0074
+       | 0064  206C  0000-XX.2                MOVEA.L     __WBenchMsg(A4),A0
+       | 0068  4AA8 0020                      TST.L       0020(A0)
+       | 006C  6706                           BEQ.B       0074
+       | 006E  2228 0020                      MOVE.L      0020(A0),D1
+       | 0072  6078                           BRA.B       00EC
+       | 0074  4BEC  0000-XX.2                LEA         ___stdiowin(A4),A5
+       | 0078  7200                           MOVEQ       #00,D1
+       | 007A  6006                           BRA.B       0082
+       | 007C  1F9D 180E                      MOVE.B      (A5)+,0E(A7,D1.L)
+       | 0080  5281                           ADDQ.L      #1,D1
+       | 0082  4A15                           TST.B       (A5)
+       | 0084  6706                           BEQ.B       008C
+       | 0086  7027                           MOVEQ       #27,D0
+       | 0088  B280                           CMP.L       D0,D1
+       | 008A  6DF0                           BLT.B       007C
+       | 008C  702F                           MOVEQ       #2F,D0
+       | 008E  B037 180D                      CMP.B       0D(A7,D1.L),D0
+       | 0092  6628                           BNE.B       00BC
+       | 0094  4BFA 0148                      LEA         0148(PC),A5
+       | 0098  4AAC  0000-XX.2                TST.L       __WBenchMsg(A4)
+       | 009C  6714                           BEQ.B       00B2
+       | 009E  226C  0000-XX.2                MOVEA.L     __WBenchMsg(A4),A1
+       | 00A2  2069 0024                      MOVEA.L     0024(A1),A0
+       | 00A6  2A68 0004                      MOVEA.L     0004(A0),A5
+       | 00AA  6006                           BRA.B       00B2
+       | 00AC  1F9D 180E                      MOVE.B      (A5)+,0E(A7,D1.L)
+       | 00B0  5281                           ADDQ.L      #1,D1
+       | 00B2  4A15                           TST.B       (A5)
+       | 00B4  6706                           BEQ.B       00BC
+       | 00B6  7027                           MOVEQ       #27,D0
+       | 00B8  B280                           CMP.L       D0,D1
+       | 00BA  6DF0                           BLT.B       00AC
+       | 00BC  206C  0000-XX.2                MOVEA.L     _SysBase(A4),A0
+       | 00C0  0C68 0024 0014                 CMPI.W      #0024,0014(A0)
+       | 00C6  6516                           BCS.B       00DE
+       | 00C8  4BEC  0000-XX.2                LEA         ___stdiov37(A4),A5
+       | 00CC  6006                           BRA.B       00D4
+       | 00CE  1F9D 180E                      MOVE.B      (A5)+,0E(A7,D1.L)
+       | 00D2  5281                           ADDQ.L      #1,D1
+       | 00D4  4A15                           TST.B       (A5)
+       | 00D6  6706                           BEQ.B       00DE
+       | 00D8  7027                           MOVEQ       #27,D0
+       | 00DA  B280                           CMP.L       D0,D1
+       | 00DC  6DF0                           BLT.B       00CE
+       | 00DE  4237 180E                      CLR.B       0E(A7,D1.L)
+       | 00E2  41EF 000E                      LEA         000E(A7),A0
+       | 00E6  2208                           MOVE.L      A0,D1
+       | 00E8  2C6C  0000-XX.2                MOVEA.L     _DOSBase(A4),A6
+       | 00EC  243C 0000 03EE                 MOVE.L      #000003EE,D2
+       | 00F2  4EAE FFE2                      JSR         FFE2(A6)
+       | 00F6  2940  0008-02.2                MOVE.L      D0,02.00000008(A4)
+       | 00FA  4AAC  0008-02.2                TST.L       02.00000008(A4)
+       | 00FE  6618                           BNE.B       0118
+       | 0100  41FA 00E4                      LEA         00E4(PC),A0
+       | 0104  2208                           MOVE.L      A0,D1
+       | 0106  243C 0000 03EE                 MOVE.L      #000003EE,D2
+       | 010C  2C6C  0000-XX.2                MOVEA.L     _DOSBase(A4),A6
+       | 0110  4EAE FFE2                      JSR         FFE2(A6)
+       | 0114  2940  0008-02.2                MOVE.L      D0,02.00000008(A4)
+       | 0118  08EC 0002  0007-02.2           BSET        #0002,02.00000007(A4)
+       | 011E  93C9                           SUBA.L      A1,A1
+       | 0120  202C  0008-02.2                MOVE.L      02.00000008(A4),D0
+       | 0124  E580                           ASL.L       #2,D0
+       | 0126  2C78 0004                      MOVEA.L     0004,A6
+       | 012A  2A40                           MOVEA.L     D0,A5
+       | 012C  4EAE FEDA                      JSR         FEDA(A6)
+       | 0130  2040                           MOVEA.L     D0,A0
+       | 0132  216D 0008 00A4                 MOVE.L      0008(A5),00A4(A0)
+       | 0138  41FA 00B2                      LEA         00B2(PC),A0
+       | 013C  2208                           MOVE.L      A0,D1
+       | 013E  243C 0000 03ED                 MOVE.L      #000003ED,D2
+       | 0144  2C6C  0000-XX.2                MOVEA.L     _DOSBase(A4),A6
+       | 0148  4EAE FFE2                      JSR         FFE2(A6)
+       | 014C  2940  0018-02.2                MOVE.L      D0,02.00000018(A4)
+       | 0150  6644                           BNE.B       0196
+       | 0152  41FA 0092                      LEA         0092(PC),A0
+       | 0156  2208                           MOVE.L      A0,D1
+       | 0158  4EAE FFE2                      JSR         FFE2(A6)
+       | 015C  2940  0018-02.2                MOVE.L      D0,02.00000018(A4)
+       | 0160  6034                           BRA.B       0196
+       | 0162  2C6C  0000-XX.2                MOVEA.L     _DOSBase(A4),A6
+       | 0166  4EAE FFCA                      JSR         FFCA(A6)
+       | 016A  2940  0008-02.2                MOVE.L      D0,02.00000008(A4)
+       | 016E  4EAE FFC4                      JSR         FFC4(A6)
+       | 0172  2940  0018-02.2                MOVE.L      D0,02.00000018(A4)
+       | 0176  41FA 0074                      LEA         0074(PC),A0
+       | 017A  2208                           MOVE.L      A0,D1
+       | 017C  243C 0000 03ED                 MOVE.L      #000003ED,D2
+       | 0182  4EAE FFE2                      JSR         FFE2(A6)
+       | 0186  2940  0028-02.2                MOVE.L      D0,02.00000028(A4)
+       | 018A  660E                           BNE.B       019A
+       | 018C  41FA 0058                      LEA         0058(PC),A0
+       | 0190  2208                           MOVE.L      A0,D1
+       | 0192  4EAE FFE2                      JSR         FFE2(A6)
+       | 0196  2940  0028-02.2                MOVE.L      D0,02.00000028(A4)
+       | 019A  56AC  0000-XX.2                ADDQ.L      #3,___nufbs(A4)
+       | 019E  7000                           MOVEQ       #00,D0
+       | 01A0  4AAC  0000-XX.2                TST.L       ___fmode(A4)
+       | 01A4  6606                           BNE.B       01AC
+       | 01A6  203C 0000 8000                 MOVE.L      #00008000,D0
+       | 01AC  42AC  001C-01.2                CLR.L       01.0000001C(A4)
+       | 01B0  2200                           MOVE.L      D0,D1
+       | 01B2  0041 0001                      ORI.W       #0001,D1
+       | 01B6  2941  0018-01.2                MOVE.L      D1,01.00000018(A4)
+       | 01BA  7201                           MOVEQ       #01,D1
+       | 01BC  2941  003E-01.2                MOVE.L      D1,01.0000003E(A4)
+       | 01C0  0040 0042                      ORI.W       #0042,D0
+       | 01C4  2940  003A-01.2                MOVE.L      D0,01.0000003A(A4)
+       | 01C8  7202                           MOVEQ       #02,D1
+       | 01CA  2941  0060-01.2                MOVE.L      D1,01.00000060(A4)
+       | 01CE  2940  005C-01.2                MOVE.L      D0,01.0000005C(A4)
+       | 01D2  7000                           MOVEQ       #00,D0
+       | 01D4  4CDF 6004                      MOVEM.L     (A7)+,D2/A5-A6
+       | 01D8  DEFC 003C                      ADDA.W      #003C,A7
+       | 01DC  4E75                           RTS
+       | 01DE  4F75                           RTS
+       | 01E0  7470                           MOVEQ       #70,D2
+       | 01E2  7574                           
+       | 01E4  0000 4E49                      ORI.B       #49,D0
+       | 01E8  4C3A 0000 2A00                 MULU.L      2A00(PC),D0
+       | 01EE  4E71                           NOP
+
+SECTION 01 "__MERGED" 00000068 BYTES
+0000 00000022-01 01.00000022
+OFFSETS 0004 THROUGH 0021 CONTAIN ZERO
+0022 00000044-01 01.00000044
+OFFSETS 0026 THROUGH 0067 CONTAIN ZERO
+
+SECTION 02 "__MERGED" 00000030 BYTES

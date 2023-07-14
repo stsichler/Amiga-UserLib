@@ -1,0 +1,28 @@
+# -----------------------------------------------------------------------------
+# Nicht-mathematischer Teil der user.lib --------------------------------------
+# ®SSi\95 ---------------------------------------------------------------------
+
+TARGET=LIB:user.lib
+
+# -----------------------------------------------------------------------------
+MODULES=cdcstr.o FindNameType.o mouse.o PLAllocStep.o Environment.o \
+DynamicBlocks.o PointerLists.o TimeHandle.o _iob.o real_ffp.o real_ieee.o \
+Exceptions.o
+#lib_muimaster.o lib_misc.o lib_interface.o lib_xpkmaster.o Exceptions.o
+# -----------------------------------------------------------------------------
+
+
+
+$(TARGET): $(MODULES)
+	@ echo "*E[1m*E[2mGeneriere $@ ...*E[0m"
+	@	SC:c/oml >NIL: $@ r $?
+
+.c.o:
+	@ run >NIL: scmsg hidden
+	@ echo "*E[2mCompiliere $* ...*E[0m"
+	@ SC:c/sc noversion nomath errorrexx $*
+
+.a.o:
+	@ echo "*E[2mAssembliere $* ...*E[0m"
+	@ asm -iINCLUDE: $*
+

@@ -1,0 +1,160 @@
+;	opt	o+,p+,l+
+	
+;	OUTPUT	.o
+ 
+; C-Lib-Befehle cdcstr / cdcnstr	* Aufruf in <include:user.h>
+;               cdrstr / cdrnstr	* -> user.lib
+
+;	IDNT	cdcstr
+	SECTION CODE,CODE
+
+	XDEF	_cdcstr	   ;char duplication and stringcopy
+	XDEF	_cdcnstr   ;char duplication and stringcopy with count
+	XDEF	_cdrstr	   ;char duplication and re-stringcopy
+	XDEF	_cdrnstr   ;char duplication and re-stringcopy with count
+;-------------------------------------------------------------------------
+_cdcstr:			;length=cdcstr(to,from,char)	;Labels A
+				; int  = char *,char *, char
+SU	SET	0
+	move.l	4+SU(sp),a1		;get to-pointer
+	move.l	8+SU(sp),a0		;get from-pointer
+
+	cmpa.l	a0,a1			;from and to is the same ?
+	bne.s	Aok
+
+	bsr.s	CopyToZS		;yeah
+Aok
+	move.l	12+SU(sp),d1		;get char
+	
+Aloop	move.b	(a0),(a1)+	;copy
+	beq.s	Aend
+	cmp.b	(a0)+,d1	;char indicated ?
+	bne.s	Aloop
+	
+	move.b	d1,(a1)+	;yes
+	bra.s	Aloop
+
+Aend	suba.l	4+SU(sp),a1	;calc. stringlength
+	move.l	a1,d0
+	subq.l	#1,d0
+	rts
+;-------------------------------------------------------------------------
+_cdcnstr:			;length=cdcnstr(to,from,char,n)	;Labels: B
+				; int  = char *, char *, char, int
+
+	move.l	d3,-(sp)
+SU 	SET 	4
+	move.l	4+SU(sp),a1		;get to-pointer
+	move.l	8+SU(sp),a0		;get from-pointer
+
+	cmpa.l	a0,a1			;from and to is the same ?
+	bne.s	Bok
+
+	bsr.s	CopyToZS		;yeah
+Bok
+	move.l	12+SU(sp),d1		;get char
+	move.l	16+SU(sp),d0		;get number
+
+	clr.l	d3
+Bloop	cmp.l	d0,d3
+	beq.s	Boverflow	
+	move.b	(a0),(a1)+	;copy
+	beq.s	Bend
+	addq.l	#1,d3
+	cmp.b	(a0)+,d1	;char indicated ?
+	bne.s	Bloop
+	
+	cmp.l	d0,d3
+	beq.s	Boverflow_and_kill_last
+	move.b	d1,(a1)+	;yes
+	addq.l	#1,d3
+	bra.s	Bloop
+
+Boverflow_and_kill_last
+	suba.l	#1,a1
+Boverflow
+	move.b	#0,(a1)+
+Bend	suba.l	4+SU(sp),a1	;calc. stringlength
+	move.l	a1,d0
+	subq.l	#1,d0
+
+	move.l	(sp)+,d3
+	rts	
+;-------------------------------------------------------------------------
+CopyToZS:			;Copy from a0 to ZS and change a0	;Labels C
+	move.l	a1,-(sp)
+	lea.l	ZS,a1
+	
+	clr.l	d0
+	move.l	#511,d1
+
+Cloop	move.b	(a0)+,(a1)+
+	beq.s	Cend
+	addq.l	#1,d0
+	cmp.l	d0,d1
+	bne.s	Cloop
+	move.b	#0,(a1)
+Cend
+	move.l	(sp)+,a1	;old value of a1 
+	lea.l	ZS,a0		;return ZS in a0
+	rts			;d0/d1 are changed
+;-------------------------------------------------------------------------
+_cdrstr:			;length=cdrstr(to,from,char)	;Labels D
+				; int  = char *,char *, char
+SU	SET	0
+	move.l	4+SU(sp),a1		;get to-pointer
+	move.l	8+SU(sp),a0		;get from-pointer
+	move.l	12+SU(sp),d1		;get char
+	
+Dloop	move.b	(a0),(a1)+	;copy
+	beq.s	Dend
+	cmp.b	(a0)+,d1	;char indicated !
+	bne.s	Dloop
+	
+	cmp.b	(a0),d1		;test if next char = "escape"
+	bne.s	Dloop
+	adda.l	#1,a0		;yes
+	bra.s	Dloop
+
+Dend	suba.l	4+SU(sp),a1	;calc. stringlength
+	move.l	a1,d0
+	subq.l	#1,d0
+	rts
+;-------------------------------------------------------------------------
+_cdrnstr:			;length=cdrnstr(to,from,char,n)	;Labels E
+				; int  = char *,char *, char, int
+	move.l	d3,-(sp)
+SU	SET	4
+	move.l	4+SU(sp),a1		;get to-pointer
+	move.l	8+SU(sp),a0		;get from-pointer
+	move.l	12+SU(sp),d1		;get char
+	move.l	16+SU(sp),d0		;get number
+	
+	clr.l	d3
+Eloop	cmp.l	d0,d3
+	beq.s	Eoverflow
+	move.b	(a0),(a1)+	;copy
+	beq.s	Eend
+	addq.l	#1,d3
+	cmp.b	(a0)+,d1	;char indicated ?
+	bne.s	Eloop
+	
+	cmp.b	(a0),d1		;yes, test if next char = same char
+	bne.s	Eloop
+	adda.l	#1,a0		;yes
+	bra.s	Eloop
+
+Eoverflow
+	move.b	#0,(a1)+
+Eend	suba.l	4+SU(sp),a1	;calc. stringlength
+	move.l	a1,d0
+	subq.l	#1,d0
+	
+	move.l	(sp)+,d3
+	rts
+
+	SECTION BSS,BSS
+
+ZS:	ds.b	512
+
+	END

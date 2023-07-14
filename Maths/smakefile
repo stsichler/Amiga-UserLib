@@ -1,0 +1,73 @@
+# -----------------------------------------------------------------------------
+# Mathematischer Teil der user.lib --------------------------------------------
+# ®SSi\95 ---------------------------------------------------------------------
+
+STDTARGET=LIB:userm.lib
+FFPTARGET=LIB:usermffp.lib
+IEEETARGET=LIB:usermieee.lib
+FPUTARGET=LIB:userm881.lib
+
+TARGET=$(STDTARGET) $(FFPTARGET) $(IEEETARGET) $(FPUTARGET)
+
+DUMMYFILE=UserLib
+
+# ----------------------------------------------------------------------------
+CMODS=  FnctRaw.c      FnctVars.c      Functions.c      FunctionsII.c     \
+Functions_eval.c      Vector.c
+MODULES=FnctRaw$$(EXT) FnctVars$$(EXT) Functions$$(EXT) FunctionsII$$(EXT) \
+Functions_eval$$(EXT) Vector$$(EXT)
+# ----------------------------------------------------------------------------
+
+TEMP=T:smake.tmp
+SCOPTS=NoVersion ErrorRexx 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$(DUMMYFILE): $(TARGET)
+	@ echo >$@ ""
+
+$(STDTARGET): $(CMODS)
+
+	@ run >NIL: scmsg hidden
+														# userm.lib
+	
+	@ echo >$(TEMP) "EXT=.std_o*N$(STDTARGET): $(MODULES)"
+	@ echo >>$(TEMP) "	@ echo *"**E[1m**E[2mGeneriere $$@ ...**E[0m**N*"*N	@ sc:c/oml >NIL: $$@ r $$?"
+	@ echo >>$(TEMP) ".c$$(EXT):"
+	@ echo >>$(TEMP) "	@ echo *"**E[2mCompiliere $$>$$(EXT) ...**E[0m*"*N	@ SC:c/sc $(SCOPTS) Math=standard objname=$$>$$(EXT) $$>.c"
+	@ sc:c/smake -f $(TEMP)
+
+$(FFPTARGET): $(CMODS)
+
+	@ run >NIL: scmsg hidden
+														# usermffp.lib
+	
+	@ echo >$(TEMP) "EXT=.ffp_o*N$(FFPTARGET): $(MODULES)"
+	@ echo >>$(TEMP) "	@ echo *"**E[1m**E[2mGeneriere $$@ ...**E[0m**N*"*N	@ sc:c/oml >NIL: $$@ r $$?"
+	@ echo >>$(TEMP) ".c$$(EXT):"
+	@ echo >>$(TEMP) "	@ echo *"**E[2mCompiliere $$>$$(EXT) ...**E[0m*"*N	@ SC:c/sc $(SCOPTS) Math=ffp objname=$$>$$(EXT) $$>.c"
+	@ sc:c/smake -f $(TEMP)
+
+$(IEEETARGET): $(CMODS)
+
+	@ run >NIL: scmsg hidden
+														# usermieee.lib
+	
+	@ echo >$(TEMP) "EXT=.ieee_o*N$(IEEETARGET): $(MODULES)"
+	@ echo >>$(TEMP) "	@ echo *"**E[1m**E[2mGeneriere $$@ ...**E[0m**N*"*N	@ sc:c/oml >NIL: $$@ r $$?"
+	@ echo >>$(TEMP) ".c$$(EXT):"
+	@ echo >>$(TEMP) "	@ echo *"**E[2mCompiliere $$>$$(EXT) ...**E[0m*"*N	@ SC:c/sc $(SCOPTS) Math=ieee objname=$$>$$(EXT) $$>.c"
+	@ sc:c/smake -f $(TEMP)
+
+$(FPUTARGET): $(CMODS)
+
+	@ run >NIL: scmsg hidden
+														# userm881.lib
+	
+	@ echo >$(TEMP) "EXT=.881_o*N$(FPUTARGET): $(MODULES)"
+	@ echo >>$(TEMP) "	@ echo *"**E[1m**E[2mGeneriere $$@ ...**E[0m**N*"*N	@ sc:c/oml >NIL: $$@ r $$?"
+	@ echo >>$(TEMP) ".c$$(EXT):"
+	@ echo >>$(TEMP) "	@ echo *"**E[2mCompiliere $$>$$(EXT) ...**E[0m*"*N	@ SC:c/sc $(SCOPTS) Math=68881 objname=$$>$$(EXT) $$>.c"
+	@ sc:c/smake -f $(TEMP)
+
+	@ delete >NIL: $(TEMP)
