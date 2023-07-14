@@ -1,12 +1,12 @@
 void __regargs __autoopenfail(char *);
 
 #include <constructor.h>
-#include <proto/exec.h> 
+#include <proto/exec.h>
 
 /* Library-abhängige Definitionen---------- */
 
-#include <proto/interface.h>
-#define LibraryName INTERFACENAME
+//#include <proto/interface.h>
+#define LibraryName "interface.library"
 #define LibraryVersion 0
 
 #define BaseKind void *

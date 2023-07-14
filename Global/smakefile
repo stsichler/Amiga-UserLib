@@ -7,8 +7,7 @@ TARGET=LIB:user.lib
 # -----------------------------------------------------------------------------
 MODULES=cdcstr.o FindNameType.o mouse.o PLAllocStep.o Environment.o \
 DynamicBlocks.o PointerLists.o TimeHandle.o _iob.o real_ffp.o real_ieee.o \
-Exceptions.o
-#lib_muimaster.o lib_misc.o lib_interface.o lib_xpkmaster.o Exceptions.o
+lib_muimaster.o lib_misc.o lib_interface.o lib_xpkmaster.o Exceptions.o
 # -----------------------------------------------------------------------------
 
 

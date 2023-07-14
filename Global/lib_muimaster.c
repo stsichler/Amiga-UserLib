@@ -5,7 +5,7 @@ void __regargs __autoopenfail(char *);
 
 /* Library-abhängige Definitionen---------- */
 
-#include <proto/muimaster.h>
+//#include <proto/muimaster.h>
 #define LibraryName "muimaster.library"
 #define LibraryVersion 0
 

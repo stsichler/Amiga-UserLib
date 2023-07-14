@@ -11,9 +11,9 @@ main()
 	real fr,dr;
 	int err[6];
 	
-	printf("Geben Sie eine Zahl ein: ");
+	printf("Geben Sie eine Zahl ein: \n");
 	scanf("%lf",&a);
-	printf("Geben Sie den Exponenten ein: ");
+	printf("Geben Sie den Exponenten ein: \n");
 	scanf("%lf",&exp);
 	
 	d=pow(a,exp);

@@ -5,7 +5,7 @@ void __regargs __autoopenfail(char *);
 
 /* Library-abhängige Definitionen---------- */
 
-#include <proto/xpkmaster.h>
+//#include <proto/xpkmaster.h>
 #define LibraryName "xpkmaster.library"
 #define LibraryVersion 0
 
