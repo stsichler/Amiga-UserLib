@@ -1,0 +1,6 @@
+*.uaem
+*.o
+*.881_o
+*.ffp_o
+*.ieee_o
+*.std_o
